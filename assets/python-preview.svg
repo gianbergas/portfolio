@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef2ff"/>
+      <stop offset="100%" stop-color="#ecfeff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#g3)"/>
+  <rect x="90" y="85" width="1020" height="505" rx="26" fill="#0f172a"/>
+  <rect x="120" y="125" width="960" height="65" rx="10" fill="#1e293b"/>
+  <rect x="120" y="215" width="460" height="335" rx="12" fill="#111827"/>
+  <rect x="620" y="215" width="460" height="335" rx="12" fill="#111827"/>
+  <text x="145" y="168" font-family="Trebuchet MS, Arial" font-size="34" font-weight="700" fill="#38bdf8">Python Game Prototypes</text>
+  <text x="150" y="290" font-family="Consolas, monospace" font-size="30" fill="#e2e8f0">game.py</text>
+  <text x="150" y="345" font-family="Consolas, monospace" font-size="30" fill="#94a3b8">game2.py</text>
+  <text x="150" y="400" font-family="Consolas, monospace" font-size="30" fill="#94a3b8">game3.py</text>
+  <circle cx="760" cy="380" r="95" fill="#2563eb"/>
+  <circle cx="840" cy="380" r="95" fill="#16a34a" opacity="0.85"/>
+  <text x="690" y="515" font-family="Trebuchet MS, Arial" font-size="30" font-weight="700" fill="#93c5fd">Pygame</text>
+</svg>

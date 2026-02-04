@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Davide Portfolio</title>
+  <style>
+    :root {
+      --bg-a: #fff4e1;
+      --bg-b: #e8f3ff;
+      --ink: #13233b;
+      --muted: #4c5b6f;
+      --panel: #ffffff;
+      --line: #d6e1ef;
+      --brand: #0e7490;
+      --brand-2: #14532d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Gill Sans", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 10%, #fff8eb 0%, transparent 35%),
+        radial-gradient(circle at 92% 85%, #e9f6ff 0%, transparent 35%),
+        linear-gradient(130deg, var(--bg-a), var(--bg-b));
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 14px 34px rgba(19, 35, 59, 0.1);
+    }
+    .hero h1 { margin: 0 0 6px; font-size: clamp(28px, 4vw, 46px); }
+    .hero p { margin: 0; color: var(--muted); font-size: 16px; }
+    .grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(19, 35, 59, 0.08);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-bottom: 1px solid var(--line);
+      background: #f5f9ff;
+    }
+    .content { padding: 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .content h2 { margin: 0; font-size: 22px; }
+    .content p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 14px;
+      color: #fff;
+      background: var(--brand);
+    }
+    .btn.alt { background: var(--brand-2); }
+    .foot {
+      margin-top: 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Portfolio Progetti</h1>
+      <p>Raccolta dei 3 progetti principali: Amazon FBA tool, web slot machine, prototipi Python game.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <img class="thumb" src="assets/fba-preview.svg" alt="Preview Amazon FBA Assistant">
+        <div class="content">
+          <h2>Amazon FBA Assistant</h2>
+          <p>Dashboard offline per margini, prezzo target, riordino stock e export PDF/Excel/CSV.</p>
+          <div class="actions">
+            <a class="btn" href="amazon-fba-assistant/amazon_fba_helper.html">Apri progetto</a>
+            <a class="btn alt" href="amazon-fba-assistant/">Cartella</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img class="thumb" src="assets/slot-preview.svg" alt="Preview Slot Machine Web">
+        <div class="content">
+          <h2>Slot Machine Web</h2>
+          <p>Mini progetto frontend con HTML, CSS e JavaScript.</p>
+          <div class="actions">
+            <a class="btn" href="slot-machine-web/index.html">Apri progetto</a>
+            <a class="btn alt" href="slot-machine-web/">Cartella</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img class="thumb" src="assets/python-preview.svg" alt="Preview Python Game Prototypes">
+        <div class="content">
+          <h2>Python Game Prototypes</h2>
+          <p>Collezione di prototipi Pygame per test gameplay e meccaniche.</p>
+          <div class="actions">
+            <a class="btn" href="python-game-prototypes/">Apri cartella</a>
+            <a class="btn alt" href="python-game-prototypes/README.md">README</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <p class="foot">Creato da Davide - Portfolio GitHub</p>
+  </main>
+</body>
+</html>
