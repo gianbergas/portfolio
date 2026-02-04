@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amazon FBA Assistant Pro</title>
+  <style>
+    :root {
+      --bg-1: #fef6e8;
+      --bg-2: #e8f5ff;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --text: #102134;
+      --muted: #5e6b7a;
+      --line: #d9e2ec;
+      --brand: #0f766e;
+      --brand-2: #0b4a8b;
+      --ok: #0f7a3f;
+      --warn: #b45309;
+      --bad: #b91c1c;
+      --shadow: 0 12px 28px rgba(16, 33, 52, 0.1);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: "Trebuchet MS", "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 5% 10%, #fff6e7 0%, rgba(255, 246, 231, 0) 40%),
+        radial-gradient(circle at 95% 90%, #e8f7ff 0%, rgba(232, 247, 255, 0) 40%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .hero {
+      background: linear-gradient(140deg, #ffffff, #f2fffb);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      animation: fadeIn 450ms ease;
+    }
+
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: clamp(26px, 3vw, 38px);
+      letter-spacing: .2px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      background: var(--brand);
+      transition: transform .12s ease, opacity .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn.secondary { background: var(--brand-2); }
+    .btn.ghost {
+      background: #eef2f6;
+      color: #1e293b;
+      border: 1px solid #dbe4ed;
+    }
+
+    .kpi-grid {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi .label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+
+    .kpi .value {
+      margin-top: 6px;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .kpi .small {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .main-grid {
+      margin-top: 14px;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      animation: slideUp 400ms ease;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .hint {
+      margin: 6px 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .field input, .field textarea {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 9px 10px;
+      background: var(--surface-2);
+      font-size: 14px;
+      color: var(--text);
+      width: 100%;
+    }
+
+    .field input:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, .15);
+      background: #fff;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .results {
+      margin-top: 10px;
+      border-top: 1px dashed var(--line);
+      padding-top: 10px;
+      font-size: 14px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 4px 0;
+    }
+
+    .status {
+      margin-top: 6px;
+      font-weight: 800;
+    }
+
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+
+    .history {
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      padding: 8px;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f2f7fb;
+      color: #334155;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .footnote {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .fields { grid-template-columns: 1fr; }
+      .toolbar .btn { width: 100%; }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .card, .hero, .kpi, .history {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <h1>Amazon FBA Assistant Pro</h1>
+      <p>Tool offline: margini, prezzo target, riordino stock, report PDF e export Excel/CSV.</p>
+      <div class="toolbar no-print">
+        <button class="btn" id="btnCalcAll">Calcola tutto</button>
+        <button class="btn secondary" id="btnPrint">Stampa / Salva PDF</button>
+        <button class="btn secondary" id="btnExcel">Esporta Excel (.xls)</button>
+        <button class="btn ghost" id="btnCsv">Esporta CSV</button>
+        <button class="btn ghost" id="btnSaveScenario">Salva scenario</button>
+      </div>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi">
+        <div class="label">Utile netto unitario</div>
+        <div class="value" id="kpiProfit">EUR 0.00</div>
+        <div class="small" id="kpiProfitState">Inserisci i dati e calcola</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Margine netto dopo ads</div>
+        <div class="value" id="kpiMargin">0.00%</div>
+        <div class="small">Obiettivo tipico 15%-25%</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Break-even ACOS</div>
+        <div class="value" id="kpiAcos">0.00%</div>
+        <div class="small">ACOS massimo per non perdere</div>
+      </article>
+      <article class="kpi">
+        <div class="label">Copertura stock</div>
+        <div class="value" id="kpiStockCover">0.00 gg</div>
+        <div class="small" id="kpiStockState">Inserisci i dati di inventario</div>
+      </article>
+    </section>
+
+    <section class="main-grid">
+      <article class="card">
+        <h2>Margini Unitari</h2>
+        <p class="hint">Calcola profitto netto, break-even ACOS e stato del prodotto.</p>
+        <form id="formMargins">
+          <div class="fields">
+            <div class="field"><label>Prezzo vendita (EUR)</label><input id="m_salePrice" value="29.99"></div>
+            <div class="field"><label>Costo prodotto (EUR)</label><input id="m_productCost" value="6.10"></div>
+            <div class="field"><label>Spedizione inbound (EUR)</label><input id="m_inbound" value="0.90"></div>
+            <div class="field"><label>Prep + imballo (EUR)</label><input id="m_prep" value="0.40"></div>
+            <div class="field"><label>Referral fee (%)</label><input id="m_referralPct" value="15"></div>
+            <div class="field"><label>FBA fee (EUR)</label><input id="m_fbaFee" value="4.85"></div>
+            <div class="field"><label>Altri costi unitari (EUR)</label><input id="m_other" value="0.55"></div>
+            <div class="field"><label>ACOS atteso (%)</label><input id="m_acosPct" value="18"></div>
+          </div>
+          <div class="toolbar no-print"><button class="btn" type="submit">Calcola margini</button></div>
+        </form>
+        <div class="results" id="m_results"></div>
+      </article>
+
+      <article class="card">
+        <h2>Prezzo Target</h2>
+        <p class="hint">Trova il prezzo richiesto per raggiungere margine e ACOS target.</p>
+        <form id="formTarget">
+          <div class="fields">
+            <div class="field"><label>Margine target (%)</label><input id="t_marginPct" value="20"></div>
+            <div class="field"><label>ACOS target (%)</label><input id="t_acosPct" value="15"></div>
+            <div class="field"><label>Costo prodotto (EUR)</label><input id="t_productCost" value="6.10"></div>
+            <div class="field"><label>Spedizione inbound (EUR)</label><input id="t_inbound" value="0.90"></div>
+            <div class="field"><label>Prep + imballo (EUR)</label><input id="t_prep" value="0.40"></div>
+            <div class="field"><label>Altri costi unitari (EUR)</label><input id="t_other" value="0.55"></div>
+            <div class="field"><label>Referral fee (%)</label><input id="t_referralPct" value="15"></div>
+            <div class="field"><label>FBA fee (EUR)</label><input id="t_fbaFee" value="4.85"></div>
+          </div>
+          <div class="toolbar no-print"><button class="btn" type="submit">Calcola prezzo target</button></div>
+        </form>
+        <div class="results" id="t_results"></div>
+      </article>
+
+      <article class="card">
+        <h2>Piano Riordino</h2>
+        <p class="hint">Stima reorder point, quantita ordine e rischio stock-out.</p>
+        <form id="formStock">
+          <div class="fields">
+            <div class="field"><label>Vendite medie giornaliere (unita)</label><input id="s_daily" value="12"></div>
+            <div class="field"><label>Lead time fornitore (giorni)</label><input id="s_lead" value="35"></div>
+            <div class="field"><label>Giorni sicurezza</label><input id="s_safety" value="10"></div>
+            <div class="field"><label>Stock attuale (unita)</label><input id="s_stock" value="450"></div>
+            <div class="field"><label>Copertura ordine desiderata (giorni)</label><input id="s_cycle" value="30"></div>
+            <div class="field"><label>Data report</label><input id="meta_date" type="date"></div>
+            <div class="field full"><label>Prodotto / note (per report)</label><textarea id="meta_note" rows="3" placeholder="Esempio: Kitchen organizer 3-pack - campagna lancio Q1"></textarea></div>
+          </div>
+          <div class="toolbar no-print"><button class="btn" type="submit">Calcola stock</button></div>
+        </form>
+        <div class="results" id="s_results"></div>
+      </article>
+    </section>
+
+    <section class="history">
+      <h2 style="margin:0 0 8px;">Storico scenari</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Data/Ora</th>
+            <th>Prodotto</th>
+            <th>Prezzo</th>
+            <th>Utile netto</th>
+            <th>Margine %</th>
+            <th>Break-even ACOS</th>
+            <th>Prezzo target</th>
+            <th>Copertura stock</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+      <p class="footnote">
+        Suggerimento: usa "Stampa / Salva PDF" e scegli "Salva come PDF" dalla finestra di stampa.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const state = {
+      margins: null,
+      target: null,
+      stock: null,
+      history: []
+    };
+
+    function num(v) {
+      const p = parseFloat(String(v).replace(",", "."));
+      return Number.isFinite(p) ? p : 0;
+    }
+
+    function eur(v) {
+      return `EUR ${v.toFixed(2)}`;
+    }
+
+    function pct(v) {
+      return `${v.toFixed(2)}%`;
+    }
+
+    function xmlEscape(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+    }
+
+    function downloadTextFile(filename, content, mime) {
+      const blob = new Blob([content], { type: mime });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function updateDateDefault() {
+      const el = document.getElementById("meta_date");
+      if (!el.value) {
+        el.value = new Date().toISOString().slice(0, 10);
+      }
+    }
+
+    function calculateMargins() {
+      const salePrice = num(document.getElementById("m_salePrice").value);
+      const productCost = num(document.getElementById("m_productCost").value);
+      const inbound = num(document.getElementById("m_inbound").value);
+      const prep = num(document.getElementById("m_prep").value);
+      const referralPct = num(document.getElementById("m_referralPct").value);
+      const fbaFee = num(document.getElementById("m_fbaFee").value);
+      const other = num(document.getElementById("m_other").value);
+      const acosPct = num(document.getElementById("m_acosPct").value);
+
+      const referralFee = salePrice * referralPct / 100;
+      const adCost = salePrice * acosPct / 100;
+      const totalNoAds = productCost + inbound + prep + other + referralFee + fbaFee;
+      const profitBeforeAds = salePrice - totalNoAds;
+      const profitAfterAds = profitBeforeAds - adCost;
+      const breakEvenAcos = salePrice > 0 ? (profitBeforeAds / salePrice) * 100 : 0;
+      const marginAfterAds = salePrice > 0 ? (profitAfterAds / salePrice) * 100 : 0;
+
+      let statusText = "Profittevole";
+      let statusClass = "ok";
+      if (profitAfterAds < 0) {
+        statusText = "Margine negativo";
+        statusClass = "bad";
+      } else if (marginAfterAds < 10) {
+        statusText = "Margine basso";
+        statusClass = "warn";
+      }
+
+      state.margins = {
+        salePrice, productCost, inbound, prep, referralPct, fbaFee, other, acosPct,
+        referralFee, adCost, totalNoAds, profitBeforeAds, profitAfterAds, breakEvenAcos, marginAfterAds,
+        statusText, statusClass
+      };
+
+      document.getElementById("m_results").innerHTML = `
+        <div class="row"><span>Referral fee</span><strong>${eur(referralFee)}</strong></div>
+        <div class="row"><span>Costo ads</span><strong>${eur(adCost)}</strong></div>
+        <div class="row"><span>Costo totale (senza ads)</span><strong>${eur(totalNoAds)}</strong></div>
+        <div class="row"><span>Utile prima ads</span><strong>${eur(profitBeforeAds)}</strong></div>
+        <div class="row"><span>Utile netto dopo ads</span><strong>${eur(profitAfterAds)}</strong></div>
+        <div class="row"><span>Break-even ACOS</span><strong>${pct(breakEvenAcos)}</strong></div>
+        <div class="row"><span>Margine netto</span><strong>${pct(marginAfterAds)}</strong></div>
+        <div class="status ${statusClass}">${statusText}</div>
+      `;
+    }
+
+    function calculateTargetPrice() {
+      const marginPct = num(document.getElementById("t_marginPct").value);
+      const acosPct = num(document.getElementById("t_acosPct").value);
+      const productCost = num(document.getElementById("t_productCost").value);
+      const inbound = num(document.getElementById("t_inbound").value);
+      const prep = num(document.getElementById("t_prep").value);
+      const other = num(document.getElementById("t_other").value);
+      const referralPct = num(document.getElementById("t_referralPct").value);
+      const fbaFee = num(document.getElementById("t_fbaFee").value);
+
+      const fixedCosts = productCost + inbound + prep + other + fbaFee;
+      const denominator = 1 - (marginPct / 100) - (acosPct / 100) - (referralPct / 100);
+
+      if (denominator <= 0) {
+        state.target = {
+          fixedCosts, denominator, valid: false, targetPrice: 0
+        };
+        document.getElementById("t_results").innerHTML = `
+          <div class="status bad">Combinazione non valida: margine + ACOS + referral troppo alti.</div>
+        `;
+        return;
+      }
+
+      const targetPrice = fixedCosts / denominator;
+      state.target = {
+        marginPct, acosPct, productCost, inbound, prep, other, referralPct, fbaFee,
+        fixedCosts, denominator, valid: true, targetPrice
+      };
+
+      document.getElementById("t_results").innerHTML = `
+        <div class="row"><span>Costi fissi unitari</span><strong>${eur(fixedCosts)}</strong></div>
+        <div class="row"><span>Prezzo target</span><strong>${eur(targetPrice)}</strong></div>
+        <div class="status ok">Target coerente con i parametri inseriti.</div>
+      `;
+    }
+
+    function calculateStock() {
+      const daily = num(document.getElementById("s_daily").value);
+      const lead = num(document.getElementById("s_lead").value);
+      const safety = num(document.getElementById("s_safety").value);
+      const stock = num(document.getElementById("s_stock").value);
+      const cycle = num(document.getElementById("s_cycle").value);
+
+      const reorderPoint = daily * (lead + safety);
+      const suggestedOrder = daily * (lead + safety + cycle);
+      const coverDays = daily > 0 ? stock / daily : 0;
+      const risk = coverDays < lead ? "Rischio stock-out" : "Copertura sufficiente";
+      const riskClass = coverDays < lead ? "bad" : "ok";
+
+      state.stock = {
+        daily, lead, safety, stock, cycle, reorderPoint, suggestedOrder, coverDays, risk, riskClass
+      };
+
+      document.getElementById("s_results").innerHTML = `
+        <div class="row"><span>Reorder point</span><strong>${reorderPoint.toFixed(2)} unita</strong></div>
+        <div class="row"><span>Ordine consigliato</span><strong>${suggestedOrder.toFixed(2)} unita</strong></div>
+        <div class="row"><span>Copertura stock</span><strong>${coverDays.toFixed(2)} giorni</strong></div>
+        <div class="status ${riskClass}">${risk}</div>
+      `;
+    }
+
+    function updateKpi() {
+      if (state.margins) {
+        document.getElementById("kpiProfit").textContent = eur(state.margins.profitAfterAds);
+        document.getElementById("kpiMargin").textContent = pct(state.margins.marginAfterAds);
+        document.getElementById("kpiAcos").textContent = pct(state.margins.breakEvenAcos);
+        document.getElementById("kpiProfitState").textContent = state.margins.statusText;
+      }
+      if (state.stock) {
+        document.getElementById("kpiStockCover").textContent = `${state.stock.coverDays.toFixed(2)} gg`;
+        document.getElementById("kpiStockState").textContent = state.stock.risk;
+      }
+    }
+
+    function calculateAll() {
+      calculateMargins();
+      calculateTargetPrice();
+      calculateStock();
+      updateKpi();
+    }
+
+    function saveScenarioToHistory() {
+      if (!state.margins || !state.target || !state.stock) {
+        calculateAll();
+      }
+      const note = document.getElementById("meta_note").value.trim() || "-";
+      const reportDate = document.getElementById("meta_date").value || new Date().toISOString().slice(0, 10);
+      const row = {
+        timestamp: new Date().toLocaleString("it-IT"),
+        reportDate,
+        note,
+        salePrice: state.margins ? state.margins.salePrice : 0,
+        profitAfterAds: state.margins ? state.margins.profitAfterAds : 0,
+        marginAfterAds: state.margins ? state.margins.marginAfterAds : 0,
+        breakEvenAcos: state.margins ? state.margins.breakEvenAcos : 0,
+        targetPrice: state.target && state.target.valid ? state.target.targetPrice : 0,
+        coverDays: state.stock ? state.stock.coverDays : 0
+      };
+      state.history.unshift(row);
+      state.history = state.history.slice(0, 25);
+      localStorage.setItem("fba_history_v2", JSON.stringify(state.history));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const body = document.getElementById("historyBody");
+      if (!state.history.length) {
+        body.innerHTML = `<tr><td colspan="8">Nessuno scenario salvato.</td></tr>`;
+        return;
+      }
+      body.innerHTML = state.history.map((h) => `
+        <tr>
+          <td>${h.timestamp}</td>
+          <td>${h.note}</td>
+          <td>${eur(h.salePrice)}</td>
+          <td>${eur(h.profitAfterAds)}</td>
+          <td>${pct(h.marginAfterAds)}</td>
+          <td>${pct(h.breakEvenAcos)}</td>
+          <td>${eur(h.targetPrice)}</td>
+          <td>${h.coverDays.toFixed(2)} gg</td>
+        </tr>
+      `).join("");
+    }
+
+    function exportCsv() {
+      calculateAll();
+      const note = (document.getElementById("meta_note").value || "").replace(/"/g, "'");
+      const reportDate = document.getElementById("meta_date").value || new Date().toISOString().slice(0, 10);
+
+      const lines = [
+        "Sezione;Metrica;Valore",
+        `Meta;Data Report;${reportDate}`,
+        `Meta;Prodotto/Note;"${note}"`,
+        `Margini;Prezzo Vendita;${state.margins.salePrice.toFixed(2)}`,
+        `Margini;Utile Netto;${state.margins.profitAfterAds.toFixed(2)}`,
+        `Margini;Margine Netto %;${state.margins.marginAfterAds.toFixed(2)}`,
+        `Margini;Break-even ACOS %;${state.margins.breakEvenAcos.toFixed(2)}`,
+        `Target;Prezzo Target;${state.target.valid ? state.target.targetPrice.toFixed(2) : "N/A"}`,
+        `Stock;Reorder Point;${state.stock.reorderPoint.toFixed(2)}`,
+        `Stock;Ordine Consigliato;${state.stock.suggestedOrder.toFixed(2)}`,
+        `Stock;Copertura Giorni;${state.stock.coverDays.toFixed(2)}`,
+        ""
+      ];
+
+      lines.push("Storico;Timestamp;Prodotto;Prezzo;Utile Netto;Margine %;Break-even ACOS %;Prezzo Target;Copertura");
+      state.history.forEach((h) => {
+        lines.push(`Storico;"${h.timestamp}";"${String(h.note).replace(/"/g, "'")}";${h.salePrice.toFixed(2)};${h.profitAfterAds.toFixed(2)};${h.marginAfterAds.toFixed(2)};${h.breakEvenAcos.toFixed(2)};${h.targetPrice.toFixed(2)};${h.coverDays.toFixed(2)}`);
+      });
+
+      downloadTextFile("fba_report.csv", lines.join("\n"), "text/csv;charset=utf-8;");
+    }
+
+    function exportExcel() {
+      calculateAll();
+      const note = document.getElementById("meta_note").value || "-";
+      const reportDate = document.getElementById("meta_date").value || new Date().toISOString().slice(0, 10);
+      const tp = state.target.valid ? state.target.targetPrice : 0;
+
+      const historyRows = state.history.map((h) => `
+        <Row>
+          <Cell><Data ss:Type="String">${xmlEscape(h.timestamp)}</Data></Cell>
+          <Cell><Data ss:Type="String">${xmlEscape(String(h.note))}</Data></Cell>
+          <Cell><Data ss:Type="Number">${h.salePrice.toFixed(2)}</Data></Cell>
+          <Cell><Data ss:Type="Number">${h.profitAfterAds.toFixed(2)}</Data></Cell>
+          <Cell><Data ss:Type="Number">${h.marginAfterAds.toFixed(2)}</Data></Cell>
+          <Cell><Data ss:Type="Number">${h.breakEvenAcos.toFixed(2)}</Data></Cell>
+          <Cell><Data ss:Type="Number">${h.targetPrice.toFixed(2)}</Data></Cell>
+          <Cell><Data ss:Type="Number">${h.coverDays.toFixed(2)}</Data></Cell>
+        </Row>
+      `).join("");
+
+      const xml = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Styles>
+    <Style ss:ID="sHeader"><Font ss:Bold="1"/><Interior ss:Color="#E2EEF9" ss:Pattern="Solid"/></Style>
+  </Styles>
+  <Worksheet ss:Name="Riepilogo">
+    <Table>
+      <Row><Cell ss:StyleID="sHeader"><Data ss:Type="String">Campo</Data></Cell><Cell ss:StyleID="sHeader"><Data ss:Type="String">Valore</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Data Report</Data></Cell><Cell><Data ss:Type="String">${xmlEscape(reportDate)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Prodotto/Note</Data></Cell><Cell><Data ss:Type="String">${xmlEscape(note)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Prezzo vendita</Data></Cell><Cell><Data ss:Type="Number">${state.margins.salePrice.toFixed(2)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Utile netto</Data></Cell><Cell><Data ss:Type="Number">${state.margins.profitAfterAds.toFixed(2)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Margine netto %</Data></Cell><Cell><Data ss:Type="Number">${state.margins.marginAfterAds.toFixed(2)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Break-even ACOS %</Data></Cell><Cell><Data ss:Type="Number">${state.margins.breakEvenAcos.toFixed(2)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Prezzo target</Data></Cell><Cell><Data ss:Type="Number">${tp.toFixed(2)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Reorder point</Data></Cell><Cell><Data ss:Type="Number">${state.stock.reorderPoint.toFixed(2)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Ordine consigliato</Data></Cell><Cell><Data ss:Type="Number">${state.stock.suggestedOrder.toFixed(2)}</Data></Cell></Row>
+      <Row><Cell><Data ss:Type="String">Copertura stock giorni</Data></Cell><Cell><Data ss:Type="Number">${state.stock.coverDays.toFixed(2)}</Data></Cell></Row>
+    </Table>
+  </Worksheet>
+  <Worksheet ss:Name="Storico">
+    <Table>
+      <Row>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Timestamp</Data></Cell>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Prodotto</Data></Cell>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Prezzo</Data></Cell>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Utile netto</Data></Cell>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Margine %</Data></Cell>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Break-even ACOS %</Data></Cell>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Prezzo target</Data></Cell>
+        <Cell ss:StyleID="sHeader"><Data ss:Type="String">Copertura gg</Data></Cell>
+      </Row>
+      ${historyRows}
+    </Table>
+  </Worksheet>
+</Workbook>`;
+
+      downloadTextFile("fba_report.xls", xml, "application/vnd.ms-excel");
+    }
+
+    function bindEvents() {
+      document.getElementById("formMargins").addEventListener("submit", function (e) {
+        e.preventDefault();
+        calculateMargins();
+        updateKpi();
+      });
+
+      document.getElementById("formTarget").addEventListener("submit", function (e) {
+        e.preventDefault();
+        calculateTargetPrice();
+      });
+
+      document.getElementById("formStock").addEventListener("submit", function (e) {
+        e.preventDefault();
+        calculateStock();
+        updateKpi();
+      });
+
+      document.getElementById("btnCalcAll").addEventListener("click", calculateAll);
+      document.getElementById("btnPrint").addEventListener("click", function () {
+        calculateAll();
+        window.print();
+      });
+      document.getElementById("btnCsv").addEventListener("click", exportCsv);
+      document.getElementById("btnExcel").addEventListener("click", exportExcel);
+      document.getElementById("btnSaveScenario").addEventListener("click", function () {
+        calculateAll();
+        saveScenarioToHistory();
+      });
+    }
+
+    function init() {
+      updateDateDefault();
+      try {
+        const saved = localStorage.getItem("fba_history_v2");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            state.history = parsed;
+          }
+        }
+      } catch (e) {
+        state.history = [];
+      }
+
+      renderHistory();
+      bindEvents();
+      calculateAll();
+    }
+
+    init();
+  </script>
+</body>
+</html>

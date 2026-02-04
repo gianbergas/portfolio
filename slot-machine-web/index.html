@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Super Slot - Gold Rush</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="glow"></div>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Super Slot</p>
+        <h1>Gold Rush Spin</h1>
+        <p class="subtitle">Slot mobile con animazioni di monete, dollari e diamanti quando paga.</p>
+      </div>
+      <div class="hud">
+        <div class="stat">
+          <span class="label">Credits</span>
+          <span id="credits" class="value">1000</span>
+        </div>
+        <div class="stat">
+          <span class="label">Bet</span>
+          <span id="bet" class="value">25</span>
+        </div>
+        <div class="stat">
+          <span class="label">Win</span>
+          <span id="win" class="value">0</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="machine">
+      <div class="reels" id="reels">
+        <div class="reel sym-coin" data-index="0"><div class="symbol">COIN</div></div>
+        <div class="reel sym-cash" data-index="1"><div class="symbol">CASH</div></div>
+        <div class="reel sym-gem" data-index="2"><div class="symbol">GEM</div></div>
+      </div>
+
+      <div class="controls">
+        <button id="bet-down" class="ghost" aria-label="Bet down">-</button>
+        <button id="spin" class="primary" aria-label="Spin">>></button>
+        <button id="bet-up" class="ghost" aria-label="Bet up">+</button>
+      </div>
+
+      <p id="message" class="message" aria-live="polite">Tap SPIN per iniziare.</p>
+    </section>
+
+    <footer class="note">
+      <p>Match 2 paga poco. Match 3 paga forte e lancia effetti speciali.</p>
+    </footer>
+  </main>
+
+  <canvas id="fx"></canvas>
+  <script src="script.js"></script>
+</body>
+</html>
